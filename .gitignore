@@ -6,5 +6,5 @@ Debug
 *.m
 cpp/build/
 cpp/dlib/
-cpp/doc/
+#cpp/doc/
 python
