@@ -1,0 +1,10 @@
+*.swp
+.project
+.cproject
+.settings
+Debug
+*.m
+cpp/build/
+cpp/dlib/
+#cpp/doc/
+python
