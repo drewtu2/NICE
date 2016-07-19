@@ -1,0 +1,4 @@
+[submodule "cpp/doc/html"]
+	path = cpp/doc/html
+	url = https://github.com/drewtu2/NICE.git
+	branch = gh-pages
