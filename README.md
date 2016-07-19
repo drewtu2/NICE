@@ -122,11 +122,54 @@ $ cd ../../..
 ## add, commit and push:
 $ git add .
 $ git commit -m "Set up html directory as gh-pages submodule"
-$ git push origin master
+$ git push origin siteSubmod
 ```
-That’s it.
 
-Updating the Doxygen Github page
-Once everything is setup, whenever you want to update the Doxygen page, just re-render your Doxygen output and repeat the last few steps described after re-rendering the Doxygen output: add, commit and push all changes to the gh-pages branch and commit the changes of the submodule to the master branch (or create some script that does that…).
+### Setting up submodule from a clone/pull
+The initial creation and setup of the submodule for the gh-pages branch only needs to occur once for the project. Once the submodules has been created and pushed to the remote repository, others can begin using the submodules very easily. The following are instructions for setting up and using the submodule from a fresh clone of the project. 
+
+Clone a copy of the project to your local machine 
+`$ git clone <linkToClone>`
+
+Move into the repository and change to the branch that hosts the submodule. In our instance, this is the "siteSubmod" branch (however this will change once this has been integrated across to the whole project).
+```
+$ cd NICE
+# Since siteSubmod exists in your remote repo, this will automatically create a branch "siteSubmod" in your local repository set up to track the remote branch from origin. 
+$ git checkout siteSubmod
+```
+
+Initialize the submodule using the submodule update command. This will cause the submodule to update to the latest commit of the gh-pages branch stored by siteSubmod. 
+```
+$ git submodule update --init
+```
+Since updates via the `git submodule update` are always made as "detached HEAD's", you need to tell the submodule what branch to update to. Do this by checking out the gh-pages module within the submodule (the gh-pages folder). Delete any of the other branches that came down with the pull. 
+```
+$ cd html
+$ git checkout gh-pages
+# delete any of the other branches that came down with the pull
+$ git branch -d master
+```
+### Updating the online documentation
+In order to update the online documentation, proceed as follows. 
+
+Compile the doxygen as you normally would by navigating to the "build" directory and running `make doc`.
+
+```
+# Updated the code (specficially the doxygen comments so now we want to recompile for website)
+# Starting from project root directory
+$ cd cpp/build
+$ make doc
+```
+The new doxygen files will be recompiled into the cpp/doc/html folder, i.e. the submodule containing only the gh-pages branch. Navigate to the folder, add, commit, and update. 
+
+```
+$ cd ../doc/html/
+$ git add .
+$ git commit -m "Updated doxygen files"
+$ git push origin gh-pages
+```
+This will commit and push within the submodule only! So now the gh-pages branch has been update with the latest documentation which will be hosted online at <username>.github.io/NICE.
+
+
 
 
