@@ -50,9 +50,7 @@ We will be using Github pages in order to publically host our compiled doxygen f
 Instructions loosley adapted from [martinhh](https://martinhh.github.io/2014/08/27/hosting-doxygen-as-github-page/). 
 
 ### Pre-Conditions
-Suppose the following things are set up:
-
-1. Your local and remote master are up-to-date and don’t have any uncommited changes.
+1. Your local and remote are up-to-date and don’t have any uncommited changes.
 2. We are currently located in the root directory of the the project (NICE) folder. 
 
 For testing purposes, we will set this up through another test branch "siteSubmod". 
@@ -97,9 +95,8 @@ The directory cpp/doc/html now contains an entirely separate git repo. If you we
 
 Because we are only using the submodule for the gh-pages branch, we can delete the other branches (within this repo. 
 ```
-# delete master branch:
-$ git branch -d master
-# If you have other branches that were cloned as well, remove those there. 
+# delete existing branches:
+$ git branch -d <branch>
 ```
 Now we can recompile our Doxygen output.
 ```
@@ -137,18 +134,24 @@ $ cd NICE
 # Since siteSubmod exists in your remote repo, this will automatically create a branch "siteSubmod" in your local repository set up to track the remote branch from origin. 
 $ git checkout siteSubmod
 ```
-
+Run `configure.sh` as you would when normally setting up a new repository. 
+```
+$ cd cpp
+$ ./configure.sh
+$ cd ..
+```
 Initialize the submodule using the submodule update command. This will cause the submodule to update to the latest commit of the gh-pages branch stored by siteSubmod. 
 ```
 $ git submodule update --init
 ```
 Since updates via the `git submodule update` are always made as "detached HEAD's", you need to tell the submodule what branch to update to. Do this by checking out the gh-pages module within the submodule (the gh-pages folder). Delete any of the other branches that came down with the pull. 
 ```
-$ cd html
+$ cd cpp/doc/html
 $ git checkout gh-pages
 # delete any of the other branches that came down with the pull
-$ git branch -d master
+$ git branch -d <branches>
 ```
+
 ### Updating the online documentation
 In order to update the online documentation, proceed as follows. 
 
