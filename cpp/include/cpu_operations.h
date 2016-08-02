@@ -585,15 +585,25 @@ class CpuOperations {
 /// \sa
 /// \ref Norm
   static Matrix<T> Normalize(const Matrix<T> &a, const int &p = 2,
-                                                  const int &axis = 0) {
+                             const int &axis = 0, const std::string &denom = "norm") {
     int num_rows = a.rows();
     int num_cols = a.cols();
+    Vector<T> denominator;
+
+    if(denom == "norm"){
+      denominator = Norm(a, p, axis);
+    } else if(denom == "std"){
+      //denominator = StandardDeviation(a, axis);
+    } else{
+      std::cerr << "Invalid denominator assignment";
+    }
+
     Matrix<T> b(num_rows, num_cols);
     if (axis == 0) {
-     b = a.transpose().array().colwise() / Norm(a, p, axis).array();
+     b = a.transpose().array().colwise() / denominator.array();
      return b.transpose();
     } else if (axis == 1) {
-     b = a.array().colwise() / Norm(a, p, axis).array();
+     b = a.array().colwise() / denominator.array();
      return b;
     } else {
      std::cerr << "Axis must be zero or one!";

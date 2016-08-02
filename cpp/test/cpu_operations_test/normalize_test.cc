@@ -43,6 +43,7 @@ TYPED_TEST_CASE(NormalizeTest, MyTypes);
 TYPED_TEST(NormalizeTest, WhenAxisis0) {
   int axis = 0;
   int p = 2;
+  std::string denom = "norm";
   this->matrix_.resize(2, 3);
   this->matrix_ << 1.0, 2.0, 3.0,
                    4.0, 5.0, 6.0;
@@ -52,7 +53,8 @@ TYPED_TEST(NormalizeTest, WhenAxisis0) {
   this->normalized_matrix_ = Nice::CpuOperations<TypeParam>::Normalize(
                                                           this->matrix_,
                                                           p,
-                                                          axis);
+                                                          axis,
+                                                          denom);
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 3; j++) {
      ASSERT_NEAR(this->normalized_matrix_(i, j), this->correct_matrix_(i, j),
@@ -64,6 +66,8 @@ TYPED_TEST(NormalizeTest, WhenAxisis0) {
 TYPED_TEST(NormalizeTest, WhenAxisis1) {
   int axis = 1;
   int p = 2;
+  std::string denom = "norm";
+
   this->matrix_.resize(2, 3);
   this->matrix_ << 1.0, 2.0, 3.0,
                    4.0, 5.0, 6.0;
@@ -73,7 +77,8 @@ TYPED_TEST(NormalizeTest, WhenAxisis1) {
   this->normalized_matrix_ = Nice::CpuOperations<TypeParam>::Normalize(
                                                           this->matrix_,
                                                           p,
-                                                          axis);
+                                                          axis,
+                                                          denom);
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 3; j++) {
      ASSERT_NEAR(this->normalized_matrix_(i, j), this->correct_matrix_(i, j),
