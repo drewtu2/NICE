@@ -593,23 +593,22 @@ class CpuOperations {
     if(denom == "norm"){
       denominator = Norm(a, p, axis);
     } else if(denom == "std"){
-      //denominator = StandardDeviation(a, axis);
+      denominator = StandardDeviation(a, axis);
     } else{
       std::cerr << "Invalid denominator assignment";
     }
 
     Matrix<T> b(num_rows, num_cols);
-    
 
     if (axis == 0) {
-     b = a.transpose().array().colwise() / denominator.array();
-     return b.transpose();
+      b = a.transpose().array().colwise() / denominator.array();
+      return b.transpose();
     } else if (axis == 1) {
-     b = a.array().colwise() / denominator.array();
-     return b;
+      b = a.array().colwise() / denominator.array();
+      return b;
     } else {
-     std::cerr << "Axis must be zero or one!";
-     exit(1);
+      std::cerr << "Axis must be zero or one!";
+      exit(1);
     }
 
   }
@@ -684,7 +683,7 @@ class CpuOperations {
     //Matrix<T> temp = a.array().colwise() - a.array().rowwise().mean(); //This
     //is the same as centering the matrix row wise so we choose to center instead.
     Matrix<T> b = Center(a, axis);
-    std::cout << b << std::endl;
+    //std::cout << b << std::endl;
     Vector<T> returnValue;
     
     if(axis == 0){ //Find Standard Deviation of each column
