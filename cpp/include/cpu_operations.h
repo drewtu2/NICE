@@ -539,34 +539,10 @@ class CpuOperations {
       std::cerr << "BAD AXIS. AXIS MUST BE 0 OR 1" << std::endl;
       exit(1);
     }
-    // Otherwise,  matrix is an m x n matrix
-    int m = a.rows();
-    int n = a.cols(); 
    
     Matrix<T> centered = Center(a, axis); //Always center the matrix first
-    Matrix<T> standardized; //We will write our new centered matrix into here
-
-    if(axis == 0) {  //Standardize via columns 
-      Vector<T> currentCol(m); 
-      Vector<T> colStdDev;
-      
-      for(int i = 0; i < m; i++){ //Subtract the standard deviation of each 
-                                  //column from their respective column
-        currentCol = centered.col(i);
-        colStdDev = Multiply(Norm(currentCol, 2, 1), sqrt(1.0/m));
-        std::cout << "Current Col: " << currentCol << " stDev: " << colStdDev << std::endl;
-        standardized.col(i) = Subtract(currentCol, colStdDev).col(0);
-      }
-    } else if (axis == 1) { //Standardize via rows
-      Vector<T> currentRow(n); 
-      Vector<T> rowStdDev(n); 
-      for(int i = 0; i < n; i++){ //Subtract the standard deviation of each row
-                                  // from their respective rows
-        currentRow = centered.row(i);
-        rowStdDev = Multiply(Norm(currentRow), sqrt(1.0/n));
-        standardized.row(i) = Subtract(currentRow, rowStdDev).row(0);
-      }
-    }
+    Matrix<T> standardized = Normalize(centered, 2, axis, "std"); //We will write our new centered matrix into here
+    
     return standardized;
   }
 
