@@ -465,12 +465,7 @@ class CpuOperations {
     }
     return b;
   }
-<<<<<<< HEAD
-
-///  This is function calculates and returns the center of a matrix.
-=======
   ///  This is function calculates and returns the center of a matrix.
->>>>>>> 6e6d00a0ac6946525c2121690e128ca181347405
   ///
   /// \param a
   /// Input matrix
@@ -548,27 +543,34 @@ class CpuOperations {
       std::cerr << "BAD AXIS. AXIS MUST BE 0 OR 1" << std::endl;
       exit(1);
     }
-   
+
     Matrix<T> centered = Center(a, axis); //Always center the matrix first
+    std::cout << "Centered Matrix: " << std::endl;
+    std::cout << centered << std::endl;
+    std::cout << "Standard Deviation " << std::endl;
+    std::cout << StandardDeviation(centered, axis) << std::endl;
+
     Matrix<T> standardized = Normalize(centered, 2, axis, "std"); //We will write our new centered matrix into here
-    
+
     return standardized;
   }
 
-/// statix Matrix <T> Normalize(const Matrix <T> &a, const int &p
-/// =2, const int &axis = 0) normalizes a m x n matrix by element.
-///
-/// \param a
-/// const Matrix<T> &a
-/// \param b
-/// const int &p = 2
-/// \param c
-/// const int &axis = 0
-///
-/// \return
-/// Matrix <T>
-/// \sa
-/// \ref Norm
+  /// statix Matrix <T> Normalize(const Matrix <T> &a, const int &p
+  /// =2, const int &axis = 0) normalizes a m x n matrix by element.
+  ///
+  /// \param a
+  /// const Matrix<T> &a
+  /// \param b
+  /// const int &p = 2
+  /// \param c
+  /// const int &axis = 0
+  /// \param d
+  /// const std::string &denom = "norm"
+  ///
+  /// \return
+  /// Matrix <T>
+  /// \sa
+  /// \ref Norm
   static Matrix<T> Normalize(const Matrix<T> &a, const int &p = 2,
                              const int &axis = 0, const std::string &denom = "norm") {
     int num_rows = a.rows();

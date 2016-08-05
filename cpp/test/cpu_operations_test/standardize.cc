@@ -45,13 +45,11 @@ typedef ::testing::Types<float, double> FloatTypes;
 TYPED_TEST_CASE(MatrixStandardizeTest, FloatTypes);
 
 TYPED_TEST(MatrixStandardizeTest, MatrixStandardizeCol) {
-  this->a.resize(3, 3);
-  this->a << 1, 4, 7,
-             2, 5, 8,
-             3, 6, 9;
-  this->correct_ans.resize(3, 3);
+  this->a.resize(2, 3);
+  this->a << 1, 2, 3,
+             4, 5, 6;
+  this->correct_ans.resize(2, 3);
   this->correct_ans << -1, -1, -1,
-                       0, 0, 0,
                        1, 1, 1;
   this->MatrixStandardize(0);
   std::cout << "Col: \n" << this->answer << std::endl;
@@ -59,14 +57,12 @@ TYPED_TEST(MatrixStandardizeTest, MatrixStandardizeCol) {
 }
 
 TYPED_TEST(MatrixStandardizeTest, MatrixStandardizeRow) {
-  this->a.resize(3, 3);
+  this->a.resize(2, 3);
   this->a << 1, 2, 3,
-             4, 5, 6,
-             7, 8, 9;
-  this->correct_ans.resize(3, 3);
-  this->correct_ans << -1, 0, 1,
-                       -1, 0, 1,
-                       -1, 0, 1;
+             4, 5, 6;
+  this->correct_ans.resize(2, 3);
+  this->correct_ans << -1.22474487, 0, 1.22474487,
+                       -1.22474487, 0, 1.22474487;
   this->MatrixStandardize(1);
   std::cout << "Row: \n" << this->answer << std::endl;
   ASSERT_TRUE(this->correct_ans.isApprox(this->answer, this->precision));
