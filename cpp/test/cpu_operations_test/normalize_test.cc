@@ -91,16 +91,17 @@ TYPED_TEST(NormalizeTest, NormAxisis1) {
   }
 }
 
-TYPED_TEST(NormalizeTest, StdAxisis0) {//Should divide each column by the std of the column
+TYPED_TEST(NormalizeTest, StdAxisis0) { // Should divide each column by the std
+                                        // of the column
   int axis = 0;
   int p = 2;
   std::string denom = "std";
-  
   this->matrix_.resize(2, 3);
   this->matrix_ << 1.0, 2.0, 3.0,
                    4.0, 5.0, 6.0;
   this->correct_matrix_.resize(2, 3);
-  this->correct_matrix_ = this->matrix_.array().rowwise()/this->StandardDeviation(axis).transpose().array();
+  this->correct_matrix_ = this->matrix_.array().rowwise()/
+      this->StandardDeviation(axis).transpose().array();
   this->normalized_matrix_ = Nice::CpuOperations<TypeParam>::Normalize(
                                                           this->matrix_,
                                                           p,
@@ -114,7 +115,8 @@ TYPED_TEST(NormalizeTest, StdAxisis0) {//Should divide each column by the std of
   }
 }
 
-TYPED_TEST(NormalizeTest, StdAxisis1) {//Should divide each row by the std of the row
+TYPED_TEST(NormalizeTest, StdAxisis1) { // Should divide each row by the std of
+                                        // the row
   int axis = 1;
   int p = 2;
   std::string denom = "std";
@@ -123,7 +125,8 @@ TYPED_TEST(NormalizeTest, StdAxisis1) {//Should divide each row by the std of th
   this->matrix_ << 1.0, 2.0, 3.0,
                    4.0, 5.0, 6.0;
   this->correct_matrix_.resize(2, 3);
-  this->correct_matrix_ = this->matrix_.array().colwise()/this->StandardDeviation(axis).array();
+  this->correct_matrix_ = this->matrix_.array().colwise()/
+      this->StandardDeviation(axis).array();
   this->normalized_matrix_ = Nice::CpuOperations<TypeParam>::Normalize(
                                                           this->matrix_,
                                                           p,

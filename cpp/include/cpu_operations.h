@@ -36,7 +36,6 @@
 namespace Nice {
 
 // Abstract class of common matrix operation interface
-///This is a test - Andrew Tu
 template<typename T>
 class CpuOperations {
  public:
@@ -469,10 +468,10 @@ class CpuOperations {
   ///
   /// \param a
   /// Input matrix
-  /// 
+  ///
   /// \param axis
   /// The axis that you are centering along. If 0, center along cols. If 1
-  /// centers along rows. Defaults to column centering.  
+  /// centers along rows. Defaults to column centering.
   ///
   /// \return Matrix<T>
   /// This function returns a value of type Matrix<T>
@@ -487,51 +486,48 @@ class CpuOperations {
       exit(1);  // Exits the program
     }
     // If the axis is not 0 (default) or 1, exit with error message
-    if (axis != 0 && axis != 1){
+    if (axis != 0 && axis != 1) {
       std::cerr << "BAD AXIS! AXIS MUST BE 0 OR 1!";
-      //std::cout << "BAD AXIS! AXIS MUST BE 0 OR 1! (COUT)";
       exit(1);
     }
-    //std::cout << "Axis is " << axis << std::endl;
     // Otherwise,  matrix is an m x n matrix
     int m = a.rows();
     int n = a.cols();
-    Matrix<T> one; //Matrix of size (m x m) OR (n x n) filled with just ones
-    Matrix<T> C;   //The centering identity that will be multiplied with a to get the cetnered matrix
-    Matrix<T> temp; //Intermediary matrix to hold (1/n)*one
+    Matrix<T> one;  // Matrix of size (m x m) OR (n x n) filled with just ones
+    Matrix<T> C;    // The centering identity that will be multiplied with a to
+                    // get the cetnered matrix
+    Matrix<T> temp;   // Intermediary matrix to hold (1/n)*one
 
-    if (axis == 0) { //Remove means from columns
-      //Calculate Cm
+    if (axis == 0) {  // Remove means from columns
+      // Calculate Cm
       Matrix<T> i(m, m);
         i.setIdentity();
       one.setConstant(m, m, 1);
       temp = Multiply(one, (1.0/m));
-      C = Subtract(i,temp);
-      return Multiply(C,a);
-    } else if (axis == 1) { //Remove means from Rows
+      C = Subtract(i, temp);
+      return Multiply(C, a);
+    } else if (axis == 1) {  // Remove means from Rows
       Matrix<T> i(n, n);
         i.setIdentity();
       one.setConstant(n, n, 1);
       temp = Multiply(one, (1.0/n));
-      C = Subtract(i,temp);
+      C = Subtract(i, temp);
       return Multiply(a, C);
-    } else{
+    } else {
       std::cerr <<"BAD AXIS! AXIS MUST BE 0 or 1!";
       exit(1);
     }
   }
 
-  ///  This is function centeres and the returns a standard  matrix.
+  /// statix Matrix <T> Normalize(const Matrix <T> &a, const int &p
+  /// =2, const int &axis = 0) normalizes a m x n matrix by element.
   ///
   /// \param a
-  /// Input matrix to be centered and standardized
-  /// 
-  /// \param axis
-  /// The axis that you are standardizing along. If 0, standardize along cols.
-  /// If 1 standardize along rows. Defaults to column standardization.  
-  ///
-  /// \return Matrix<T>
-  /// This function returns a value of type Matrix<T>
+  /// const Matrix<T> &a
+  /// \param b
+  /// const int &p = 2
+  /// \param c
+  /// const int &axis = 0
   ///
   static Matrix<T> Standardize(const Matrix<T> &a, const int axis = 0) {
     // If the matrix is empty, exit with error message
@@ -572,16 +568,17 @@ class CpuOperations {
   /// \sa
   /// \ref Norm
   static Matrix<T> Normalize(const Matrix<T> &a, const int &p = 2,
-                             const int &axis = 0, const std::string &denom = "norm") {
+                             const int &axis = 0,
+                             const std::string &denom = "norm") {
     int num_rows = a.rows();
     int num_cols = a.cols();
     Vector<T> denominator;
 
-    if(denom == "norm"){
+    if (denom == "norm") {
       denominator = Norm(a, p, axis);
-    } else if(denom == "std"){
+    } else if (denom == "std") {
       denominator = StandardDeviation(a, axis);
-    } else{
+    } else {
       std::cerr << "Invalid denominator assignment";
     }
 
@@ -597,7 +594,6 @@ class CpuOperations {
       std::cerr << "Axis must be zero or one!";
       exit(1);
     }
-
   }
   /// Generates a kernel matrix from an input data_matrix
   /// \param data_matrix
@@ -649,47 +645,47 @@ class CpuOperations {
     *degree_matrix_to_the_minus_half = d_i.array().sqrt().unaryExpr(
         std::ptr_fun(util::reciprocal<T>)).matrix().asDiagonal();
   }
-  ///Calculates the standard deviation of a given vector 
+  /// Calculates the standard deviation of a given vector
   ///
   /// \param a
   /// Input vector
-  /// 
+  ///
   /// Output a vector containing the standaard deviations of the rows or columns
   /// of the input matrix
-  static Vector<T> StandardDeviation(const Matrix<T> &a, const int axis = 0){
-    //Std = sqrt(1/n*[(x1-u)^2+(x2-u)^2...+(xn-u)^2])
-    //u = average of the vector
-    //n = number of the elements
-    if(a.rows() == 0 || a.cols() == 0){
+  static Vector<T> StandardDeviation(const Matrix<T> &a, const int axis = 0) {
+    // Std = sqrt(1/n*[(x1-u)^2+(x2-u)^2...+(xn-u)^2])
+    // u = average of the vector
+    // n = number of the elements
+    if (a.rows() == 0 || a.cols() == 0) {
       std::cerr << "EMPTY MATRIX!";
       exit(1);
-    }  
+    }
     int num_rows = a.rows();
     int num_cols = a.cols();
-    
-    //Matrix<T> temp = a.array().colwise() - a.array().rowwise().mean(); //This
-    //is the same as centering the matrix row wise so we choose to center instead.
+
+    // Matrix<T> temp = a.array().colwise() - a.array().rowwise().mean();
+    // This is the same as centering the matrix row wise so we choose to
+    // center instead.
     Matrix<T> b = Center(a, axis);
-    //std::cout << b << std::endl;
     Vector<T> returnValue;
-    
-    if(axis == 0){ //Find Standard Deviation of each column
+
+    if (axis == 0) {  // Find Standard Deviation of each column
       b = b.array().pow(2);
       returnValue = b.array().colwise().sum();
       returnValue *= (1.0/num_rows);
       returnValue = returnValue.array().pow(.5);
-      return returnValue; 
-    } else if(axis == 1){ //Find Standard Deviation of each row
-      b = b.array().pow(2); //Square every element
-      returnValue = b.array().rowwise().sum(); //Sum entire row
-      returnValue *= (1.0/num_cols); //multply by 1/size
-      returnValue = returnValue.array().pow(.5); //take square root
       return returnValue;
-    } else{ //Bad Axis
+    } else if (axis == 1) {  // Find Standard Deviation of each row
+      b = b.array().pow(2);  // Square every element
+      returnValue = b.array().rowwise().sum();  // Sum entire row
+      returnValue *= (1.0/num_cols);  // multply by 1/size
+      returnValue = returnValue.array().pow(.5);  // take square root
+      return returnValue;
+    } else {  // Bad Axis
       std::cerr << "Axis must be 0 or 1!";
       exit(1);
     }
-  } 
+  }
 };
 }  // namespace Nice
 #endif  // CPP_INCLUDE_CPU_OPERATIONS_H_
