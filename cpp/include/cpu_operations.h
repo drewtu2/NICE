@@ -534,19 +534,20 @@ class CpuOperations {
     if (a.rows() == 0 || a.cols() == 0) {
       std::cerr << "EMPTY MATRIX AS ARGUMENT!";
       exit(1);  // Exits the program
-    } else if (axis != 0 && axis != 1){ // If the axis is not 0 (default) or 1,
-                                        // exit with error message
+    } else if (axis != 0 && axis != 1) {  // If the axis is not 0 (default) or 1
+                                          // exit with error message
       std::cerr << "BAD AXIS. AXIS MUST BE 0 OR 1" << std::endl;
       exit(1);
     }
 
-    Matrix<T> centered = Center(a, axis); //Always center the matrix first
+    Matrix<T> centered = Center(a, axis);  // Always center the matrix first
     std::cout << "Centered Matrix: " << std::endl;
     std::cout << centered << std::endl;
     std::cout << "Standard Deviation " << std::endl;
     std::cout << StandardDeviation(centered, axis) << std::endl;
 
-    Matrix<T> standardized = Normalize(centered, 2, axis, "std"); //We will write our new centered matrix into here
+    // We will write our new centered matrix into here
+    Matrix<T> standardized = Normalize(centered, 2, axis, "std");
 
     return standardized;
   }
