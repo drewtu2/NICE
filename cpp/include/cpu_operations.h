@@ -534,7 +534,8 @@ class CpuOperations {
   /// \sa
   /// \ref Norm
   static Matrix<T> Normalize(const Matrix<T> &a, const int &p = 2,
-                             const int &axis = 0, const std::string &denom = "norm") {
+                             const int &axis = 0,
+                             const std::string &denom = "norm") {
     int num_rows = a.rows();
     int num_cols = a.cols();
     Vector<T> denominator;
@@ -559,7 +560,6 @@ class CpuOperations {
       std::cerr << "Axis must be zero or one!";
       exit(1);
     }
-
   }
   /// Generates a kernel matrix from an input data_matrix
   /// \param data_matrix
@@ -618,7 +618,7 @@ class CpuOperations {
   ///
   /// Output a vector containing the standaard deviations of the rows or columns
   /// of the input matrix
-  static Vector<T> StandardDeviation(const Matrix<T> &a, const int axis = 0) { 
+  static Vector<T> StandardDeviation(const Matrix<T> &a, const int axis = 0) {
     // Std = sqrt(1/n*[(x1-u)^2+(x2-u)^2...+(xn-u)^2])
     // u = average of the vector
     // n = number of the elements
@@ -633,7 +633,6 @@ class CpuOperations {
     // This is the same as centering the matrix row wise so we choose to
     // center instead.
     Matrix<T> b = Center(a, axis);
-    //std::cout << b << std::endl;
     Vector<T> returnValue;
 
     if (axis == 0) {  // Find Standard Deviation of each column
