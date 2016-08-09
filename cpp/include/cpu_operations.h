@@ -542,11 +542,13 @@ class CpuOperations {
   /// =2, const int &axis = 0) normalizes a m x n matrix by element.
   ///
   /// \param a
-  /// const Matrix<T> &a
-  /// \param b
-  /// const int &p = 2
-  /// \param c
-  /// const int &axis = 0
+  /// Input matrix
+  /// \param p
+  /// Power to be used in the exponent of the norm function.
+  /// \param axis
+  /// Tha axis along whcih we will calculate the standardization
+  /// If axis = 0, we will calculate columwise, if axis = 1 we
+  /// will calculate row wise.
   ///
   static Matrix<T> Standardize(const Matrix<T> &a, const int axis = 0) {
     // If the matrix is empty, exit with error message
@@ -560,10 +562,6 @@ class CpuOperations {
     }
 
     Matrix<T> centered = Center(a, axis);  // Always center the matrix first
-    std::cout << "Centered Matrix: " << std::endl;
-    std::cout << centered << std::endl;
-    std::cout << "Standard Deviation " << std::endl;
-    std::cout << StandardDeviation(centered, axis) << std::endl;
 
     // We will write our new centered matrix into here
     Matrix<T> standardized = Normalize(centered, 2, axis, "std");
