@@ -537,7 +537,6 @@ class CpuOperations {
       exit(1);
     }
   }
-
   /// statix Matrix <T> Normalize(const Matrix <T> &a, const int &p
   /// =2, const int &axis = 0) normalizes a m x n matrix by element.
   ///
@@ -547,7 +546,7 @@ class CpuOperations {
   /// Input for exponent used in norm
   /// \param axis
   /// Axis which normalize will be calculated along. If 0, axis will be
-  /// calcualted column wise. If 1, axis will be calculated row wise. 
+  /// calcualted column wise. If 1, axis will be calculated row wise.
   /// \param denom
   /// The value to be used in the denominator of the normalize function. Can be
   /// set to either "norm" or "std"
@@ -632,11 +631,18 @@ class CpuOperations {
     *degree_matrix_to_the_minus_half = d_i.array().sqrt().unaryExpr(
         std::ptr_fun(util::reciprocal<T>)).matrix().asDiagonal();
   }
-  /// Calculates the standard deviation of a given vector
+  /// Calculates the standard deviation of a given matrix and returns it as a
+  /// vector.
   ///
   /// \param a
-  /// Input vector
+  /// input matrix a
   ///
+  /// \param axis
+  /// The axis for the standard deviation to be calculated along. If axis is 1
+  /// will return the standard deviation calculated by column. If axis is 0,
+  /// will return the standard deviation calculated by row.
+  ///
+  /// /return
   /// Output a vector containing the standaard deviations of the rows or columns
   /// of the input matrix
   static Vector<T> StandardDeviation(const Matrix<T> &a, const int axis = 0) {
@@ -654,20 +660,20 @@ class CpuOperations {
     // This is the same as centering the matrix row wise so we choose to
     // center instead.
     Matrix<T> b = Center(a, axis);
-    Vector<T> returnValue;
+    Vector<T> calculated_std;
 
     if (axis == 0) {  // Find Standard Deviation of each column
       b = b.array().pow(2);
-      returnValue = b.array().colwise().sum();
-      returnValue *= (1.0/num_rows);
-      returnValue = returnValue.array().pow(.5);
-      return returnValue;
+      calculated_std = b.array().colwise().sum();
+      calculated_std *= (1.0 / num_rows);
+      calculated_std = calculated_std.array().sqrt();
+      return calculated_std;
     } else if (axis == 1) {  // Find Standard Deviation of each row
       b = b.array().pow(2);  // Square every element
-      returnValue = b.array().rowwise().sum();  // Sum entire row
-      returnValue *= (1.0/num_cols);  // multply by 1/size
-      returnValue = returnValue.array().pow(.5);  // take square root
-      return returnValue;
+      calculated_std = b.array().rowwise().sum();  // Sum entire row
+      calculated_std *= (1.0 / num_cols);  // multply by 1/size
+      calculated_std = calculated_std.array().sqrt();  // take square root
+      return calculated_std;
     } else {  // Bad Axis
       std::cerr << "Axis must be 0 or 1!";
       exit(1);
